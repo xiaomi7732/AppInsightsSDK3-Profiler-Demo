@@ -36,7 +36,7 @@ Write-Host "      Build succeeded." -ForegroundColor Green
 
 # 2. Zip deploy to Azure Web App
 Write-Host "[2/2] Deploying to Azure Web App..." -ForegroundColor Yellow
-$zipPath = Join-Path $ProjectDir "publish.zip"
+$zipPath = Join-Path $publishDir "publish.zip"
 if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
 Compress-Archive -Path "$publishDir\*" -DestinationPath $zipPath
 
@@ -47,10 +47,6 @@ az webapp deploy `
     --type zip `
     --output none
 if ($LASTEXITCODE -ne 0) { throw "App deployment failed." }
-
-# Cleanup publish artifacts
-Remove-Item $publishDir -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item $zipPath -Force -ErrorAction SilentlyContinue
 
 $hostName = (az webapp show --resource-group $ResourceGroupName --name $WebAppName --query defaultHostName -o tsv)
 

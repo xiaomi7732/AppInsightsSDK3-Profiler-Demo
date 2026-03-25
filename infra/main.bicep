@@ -1,5 +1,6 @@
 // Main Bicep template - orchestrates website infrastructure and .NET app deployment
-// Deploys: Log Analytics + App Insights (monitoring), App Service Plan + Web App (compute)
+// Deploys: Log Analytics + App Insights (monitoring), App Service Plan + Web App (compute),
+//          and a standard availability test for the endpoint
 
 targetScope = 'resourceGroup'
 
@@ -23,7 +24,7 @@ param logRetentionDays int = 30
 @description('.NET runtime stack version')
 param dotnetVersion string = 'v10.0'
 
-// Deploy monitoring infrastructure (Log Analytics + Application Insights)
+// 1. Deploy monitoring infrastructure (Log Analytics + Application Insights)
 module monitoring 'modules/monitoring.bicep' = {
   name: 'monitoring-deployment'
   params: {
@@ -33,7 +34,7 @@ module monitoring 'modules/monitoring.bicep' = {
   }
 }
 
-// Deploy website infrastructure and .NET application
+// 2. Deploy website infrastructure and .NET application
 module website 'modules/website.bicep' = {
   name: 'website-deployment'
   params: {
@@ -42,6 +43,17 @@ module website 'modules/website.bicep' = {
     appServiceSkuName: appServiceSkuName
     dotnetVersion: dotnetVersion
     appInsightsConnectionString: monitoring.outputs.appInsightsConnectionString
+  }
+}
+
+// 3. Standard availability test - pings the web app from multiple global locations
+module availabilityTest 'modules/availability-test.bicep' = {
+  name: 'availability-test-deployment'
+  params: {
+    location: location
+    appName: appName
+    appInsightsId: monitoring.outputs.appInsightsId
+    webAppHostName: website.outputs.webAppDefaultHostName
   }
 }
 
