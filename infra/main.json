@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.41.2.15936",
-      "templateHash": "6931573502756498482"
+      "templateHash": "18013294570622424379"
     }
   },
   "parameters": {
@@ -53,7 +53,7 @@
     },
     "dotnetVersion": {
       "type": "string",
-      "defaultValue": "v10.0",
+      "defaultValue": "10.0",
       "metadata": {
         "description": ".NET runtime stack version"
       }

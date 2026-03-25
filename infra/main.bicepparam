@@ -4,4 +4,4 @@ using 'main.bicep'
 param appName = 'aisdk3'
 param appServiceSkuName = 'B1'
 param logRetentionDays = 30
-param dotnetVersion = 'v10.0'
+param dotnetVersion = '10.0'

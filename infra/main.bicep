@@ -22,7 +22,7 @@ param appServiceSkuName string = 'B1'
 param logRetentionDays int = 30
 
 @description('.NET runtime stack version')
-param dotnetVersion string = 'v10.0'
+param dotnetVersion string = '10.0'
 
 // 1. Deploy monitoring infrastructure (Log Analytics + Application Insights)
 module monitoring 'modules/monitoring.bicep' = {

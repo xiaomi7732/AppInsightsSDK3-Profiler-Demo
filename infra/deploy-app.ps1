@@ -27,16 +27,17 @@ Write-Host "Resource Group : $ResourceGroupName"
 Write-Host "Web App        : $WebAppName"
 Write-Host ""
 
-# 1. Publish .NET application
+# 1. Publish .NET application (clean output first)
 Write-Host "[1/2] Publishing .NET application..." -ForegroundColor Yellow
 $publishDir = Join-Path $ProjectDir "publish"
+if (Test-Path $publishDir) { Remove-Item $publishDir -Recurse -Force }
 dotnet publish "$ProjectDir\AISDK3.csproj" -c Release -o $publishDir --nologo
 if ($LASTEXITCODE -ne 0) { throw ".NET publish failed." }
 Write-Host "      Build succeeded." -ForegroundColor Green
 
 # 2. Zip deploy to Azure Web App
 Write-Host "[2/2] Deploying to Azure Web App..." -ForegroundColor Yellow
-$zipPath = Join-Path $publishDir "publish.zip"
+$zipPath = Join-Path $ProjectDir "publish.zip"
 if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
 Compress-Archive -Path "$publishDir\*" -DestinationPath $zipPath
 
