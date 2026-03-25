@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Azure.Monitor.OpenTelemetry.Profiler" Version="1.0.0-beta9" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="3.0.0" />
   </ItemGroup>
 
